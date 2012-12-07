@@ -4,6 +4,8 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
@@ -23,6 +25,7 @@ import static junit.framework.Assert.assertEquals;
  * *
  * @author Ross Rowe
  */
+@RunWith(value = Parameterized.class)
 public class WebDriverTest {
 
     private WebDriver driver;
@@ -39,10 +42,11 @@ public class WebDriverTest {
     }
 
     @Test
-    public void webDriver(String url, String verificationString) throws Exception {
+    public void webDriver(WebDriver driver, String url, String verificationString) throws Exception {
         driver.get(url);
         // Check that title is correct
-        assertEquals(verificationString, driver.getTitle());
+        String actualTitle = driver.getTitle();
+        assertEquals(verificationString, actualTitle);
         // Take screenshot
         WebDriver augmentedDriver = new Augmenter().augment(driver);
         File screenshot = ((TakesScreenshot)augmentedDriver).
